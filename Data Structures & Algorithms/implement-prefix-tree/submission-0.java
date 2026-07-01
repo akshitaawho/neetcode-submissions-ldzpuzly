@@ -1,53 +1,49 @@
-class TrieNode {
-    HashMap<Character, TrieNode> children;
-    boolean is_end;
-    
-    public TrieNode() {
-        children = new HashMap<>();
-        is_end = false;
-    }
+class TrieNode{
+    TrieNode[] children = new TrieNode[26];
+    boolean isEnd = false;
 }
 
 class PrefixTree {
-    TrieNode root;
+    TrieNode root = new TrieNode();
 
-    public PrefixTree() {
-        root = new TrieNode();
-    }
+    public PrefixTree() {}
 
     public void insert(String word) {
-        TrieNode current = root;
+        TrieNode curr = root;
         for (int i = 0; i<word.length(); i++){
-            char letter = word.charAt(i);
-            if(!current.children.containsKey(letter)){
-                current.children.put(letter, new TrieNode());
+            int index = word.charAt(i) - 'a';
+            if (curr.children[index] == null){
+                curr.children[index] = new TrieNode();
             }
-            current = current.children.get(letter);
+            curr = curr.children[index];
         }
-        current.is_end = true;
+        curr.isEnd = true;
     }
 
     public boolean search(String word) {
-        TrieNode current = root;
-        for (int i = 0; i < word.length(); i++) {
-            char letter = word.charAt(i);
-            if (!current.children.containsKey(letter)) {
+        TrieNode curr = root;
+        for (int i = 0; i<word.length(); i++){
+            int index = word.charAt(i) - 'a';
+            if (curr.children[index] == null){
                 return false;
             }
-            current = current.children.get(letter);
+                
+            curr = curr.children[index];
+            
         }
-        return current.is_end;
+        return curr.isEnd;
     }
 
     public boolean startsWith(String prefix) {
-        TrieNode current = root;
-        for (int i = 0; i < prefix.length(); i++) {
-            char letter = prefix.charAt(i);
-            if (!current.children.containsKey(letter)) {
+        TrieNode curr = root;
+        for (int i = 0; i<prefix.length(); i++){
+            int index = prefix.charAt(i) - 'a';
+            if (curr.children[index] == null){
                 return false;
             }
-            current = current.children.get(letter);
+            curr = curr.children[index];
         }
+
         return true;
     }
 }
